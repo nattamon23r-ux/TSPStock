@@ -1107,28 +1107,53 @@
               sidebarOverlay.classList.remove('overlay-active'); // Hide overlay
               document.body.style.overflow = ''; // Restore body scrolling
           }
-          const qtyEl = document.getElementById('purchaseQty');
+        const qtyEl = document.getElementById('purchaseQty');
         const priceEl = document.getElementById('purchasePrice');
         const otherCostEl = document.getElementById('purchaseOtherCost');
         const discountEl = document.getElementById('purchaseDiscount');
         const totalPreviewEl = document.getElementById('purchaseTotalPreview');
-        
+
         function updateTotalPreview() {
-            const qty = parseFloat(qtyEl?.value || '0');
-            const price = parseFloat(priceEl?.value || '0');
-            const otherCost = parseFloat(otherCostEl?.value || '0');
-            const discount = parseFloat(discountEl?.value || '0');
-            let total = qty * price + otherCost - discount;
-            if (total < 0) total = 0;
-            if (totalPreviewEl) {
-                totalPreviewEl.textContent = `ยอดรวม: ${total.toLocaleString('th-TH', {minimumFractionDigits:2})} บาท`;
+          const qty = parseFloat(qtyEl?.value || '0');
+          const price = parseFloat(priceEl?.value || '0');
+          const otherCost = parseFloat(otherCostEl?.value || '0');
+          const discount = parseFloat(discountEl?.value || '0');
+          let total = qty * price + otherCost - discount;
+          if (total < 0) total = 0;
+          if (totalPreviewEl) {
+            totalPreviewEl.textContent = `ยอดรวม: ${total.toLocaleString('th-TH', {minimumFractionDigits:2})} บาท`;
+          }
+        }
+
+        [qtyEl, priceEl, otherCostEl, discountEl].forEach(el => {
+          if (el) el.addEventListener('input', updateTotalPreview);
+        });
+        updateTotalPreview();
+    });
+
+      // Setup purchase total preview listeners immediately (not only on resize)
+      const purchaseQtyEl = document.getElementById('purchaseQty');
+      const purchasePriceEl = document.getElementById('purchasePrice');
+      const purchaseOtherCostEl = document.getElementById('purchaseOtherCost');
+      const purchaseDiscountEl = document.getElementById('purchaseDiscount');
+      const purchaseTotalPreviewEl = document.getElementById('purchaseTotalPreview');
+
+      function updatePurchaseTotalPreview() {
+        const qty = parseFloat(purchaseQtyEl?.value || '0');
+        const price = parseFloat(purchasePriceEl?.value || '0');
+        const otherCost = parseFloat(purchaseOtherCostEl?.value || '0');
+        const discount = parseFloat(purchaseDiscountEl?.value || '0');
+        let total = qty * price + otherCost - discount;
+        if (total < 0) total = 0;
+        if (purchaseTotalPreviewEl) {
+          purchaseTotalPreviewEl.textContent = `ยอดรวม: ${total.toLocaleString('th-TH', { minimumFractionDigits: 2 })} บาท`;
+        }
       }
-}    
-    [qtyEl, priceEl, otherCostEl,discountEl].forEach(el => {
-        if (el) el.addEventListener('input', updateTotalPreview);
-    });
-    updateTotalPreview()
-    });
+
+      [purchaseQtyEl, purchasePriceEl, purchaseOtherCostEl, purchaseDiscountEl].forEach(el => {
+        if (el) el.addEventListener('input', updatePurchaseTotalPreview);
+      });
+      updatePurchaseTotalPreview();
     const tabs = [
       'dashboard','add-product','add-vendor','add-project','purchase','issue',
       'report', 'vendors-list', 'project-expenditure-report', 'budget-estimate', 'settings'
@@ -2600,7 +2625,6 @@ document.getElementById('exportSelectedVendorsBtn')?.addEventListener('click', f
 
       if (issueForm) { 
         issueForm.addEventListener('input', ()=>{
-          e.preventDefault();
           if (issueStatus) issueStatus.textContent = '';
           const pid = (String(document.getElementById('issueProduct')?.value||'')).trim();
           const proj = (String(document.getElementById('issueProject')?.value||'')).trim();
@@ -3579,17 +3603,13 @@ function showMultiVendorPurchaseModal(vendorCodes) {
 
 
       // Initial load
-    loadAll();
-    loadAll().then(() => {
-      populateProductDatalist();
-      populateVendorDatalist();
-      populateIssueProductDatalist();
-      populateIssueProjectDatalist();
-      // ...อื่นๆ...
-    });
-            // หลัง loadAll() เสร็จ
       loadAll().then(() => {
+        populateProductDatalist();
+        populateVendorDatalist();
+        populateIssueProductDatalist();
+        populateIssueProjectDatalist();
         renderBudgetEstimate();
+        // ...อื่นๆ...
       });
       const selectAllBudgetEstimate = document.getElementById('selectAllBudgetEstimate');
       const exportSelectedBudgetEstimateBtn = document.getElementById('exportSelectedBudgetEstimateBtn');
