@@ -1,16 +1,17 @@
 // App entrypoint: orchestrates data loading, UI, and events
 import { loadAll, cache, sendToAppsScript } from './dataService.js';
 import { initUI, renderDashboard, renderReport, showError } from './ui.js';
-import { createRipple } from './utils.js';
+import { createRipple, configureTailwind } from './utils.js';
 
-// Initialize UI bindings
+// Configure Tailwind runtime theme and initialize UI bindings
+configureTailwind();
 const { startRefresh } = initUI();
 
 async function doLoadAllAndRender() {
   try {
     await loadAll();
     // Render slices
-    renderDashboard();
+    await renderDashboard();
     renderReport('');
   } catch (e) {
     showError(e.message || 'โหลดข้อมูลล้มเหลว');

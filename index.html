@@ -11,29 +11,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- Chart.js for Charts -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Chart.js will be loaded dynamically in ui.js as an ES module -->
   
-  <script>
-    // ตั้งค่าธีม Tailwind CSS
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Kanit', 'sans-serif'], // ใช้ Kanit เป็นฟอนต์หลัก
-          },
-          colors: {
-            base: { bg: '#0a0b12', card: '#121326', line: '#1f2140' },
-            neon: { blue: '#4cc1ff', violet: '#a78b45', fuchsia: '#ff6bff', cyan: '#3fe3ff' }
-          },
-          boxShadow: {
-            neonBlue: '0 0 22px rgba(76,193,255,.35)',
-            neonViolet: '0 0 22px rgba(167,139,250,.35)',
-          }
-        }
-      }
-    }
-  </script>
   <style>
     /* Ensure HTML and Body take full height and width, and set background */
     html {
@@ -1017,65 +996,6 @@
     </div>
 </div>
   <script type="module" src="./app.js"></script>
-    function populateProductDatalist() {
-        const datalist = document.getElementById('purchaseProductOptions');
-        if (!datalist) return;
-        datalist.innerHTML = '';
-        cache.products.forEach(p => {
-            const opt = document.createElement('option');
-            opt.value = p['รหัสสินค้า'];
-            opt.label = `${p['รหัสสินค้า']} — ${p['ชื่อสินค้า']}`;
-            datalist.appendChild(opt);
-        });
-        }
-    
-    function populateVendorDatalist() {
-        const datalist = document.getElementById('purchaseVendorOptions');
-        if (!datalist) return;
-        datalist.innerHTML = '';
-        cache.vendors.forEach(v => {
-            const opt = document.createElement('option');
-            opt.value = v['รหัส Vendors'];
-            opt.label = `${v['รหัส Vendors']} — ${v['Vender']}`;
-            datalist.appendChild(opt);
-        });
-        }
-
-    function populateIssueProductDatalist() {
-      const datalist = document.getElementById('issueProductOptions');
-      if (!datalist) return;
-      datalist.innerHTML = '';
-      cache.products.forEach(p => {
-        const opt = document.createElement('option');
-        opt.value = p['รหัสสินค้า'];
-        opt.label = `${p['รหัสสินค้า']} — ${p['ชื่อสินค้า']}`;
-        datalist.appendChild(opt);
-      });
-    }
-    
-    function populateIssueProjectDatalist() {
-      const datalist = document.getElementById('issueProjectOptions');
-      if (!datalist) return;
-      datalist.innerHTML = '';
-      cache.projects.forEach(p => {
-        const opt = document.createElement('option');
-        opt.value = p['กำหนดรหัสจุด'];
-        opt.label = `${p['กำหนดรหัสจุด']} — ${p['โครงการ']}${p['ชื่อย่อ'] ? ' ('+p['ชื่อย่อ']+')' : ''}`;
-        datalist.appendChild(opt);
-      });
-    }
-
-      // Chart instances - REMOVED
-      // let dailyMovementLineChart = null;
-      // let dailyMovementDoughnutChart = null;
-
-      // --- Refresh Button UI elements ---
-      const refreshBtn = document.getElementById('refreshBtn');
-      const refreshIcon = document.getElementById('refreshIcon');
-      const btnLabel = document.getElementById('btnLabel');
-      const progressBar = document.getElementById('progressBar');
-      const statusText = document.getElementById('statusText');
-      const dashboardActivityList = document.getElementById('activityList'); // Original recent activities list
 
       let isRefreshing = false;
 
@@ -3759,5 +3679,4 @@ function showMultiVendorPurchaseModal(vendorCodes) {
         }
       });
     })
-  </script>
 </body>

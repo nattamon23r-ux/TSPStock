@@ -180,7 +180,7 @@ export function showError(msg) {
 }
 
 // Render slices used by app.js after data loaded
-export function renderDashboard() {
+export async function renderDashboard() {
   const totalQty = cache.stockReport.reduce((s, r) => s + (+r['คงเหลือ'] || 0), 0);
   const totalStockValue = cache.stockReport.reduce((s, r) => s + (+r['ต้นทุนรวมปัจจุบัน'] || 0), 0);
   const productCount = cache.stockReport.length;
@@ -197,8 +197,9 @@ export function renderDashboard() {
 
   if (window.purchaseChartInstance) window.purchaseChartInstance.destroy();
   const ctx = document.getElementById('purchaseChart')?.getContext('2d');
-  if (ctx && window.Chart) {
-    window.purchaseChartInstance = new window.Chart(ctx, {
+  if (ctx) {
+    const ChartCtor = window.Chart || (await import('https://cdn.jsdelivr.net/npm/chart.js')).default;
+    window.purchaseChartInstance = new ChartCtor(ctx, {
       type: 'bar',
       data: {
         labels: cache.monthlyActivity.labels || [],
