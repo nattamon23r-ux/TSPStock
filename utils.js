@@ -106,3 +106,28 @@ export function generateLotId(productCode, dateStr, lotIndex = 1) {
   }
   return `${productCode}-${ymd}-${String(lotIndex).padStart(2, '0')}`;
 }
+
+// Configure Tailwind (CDN) theme at runtime
+export function configureTailwind() {
+  try {
+    const w = typeof window !== 'undefined' ? window : undefined;
+    if (!w || !w.tailwind) return;
+    w.tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Kanit', 'sans-serif'] },
+          colors: {
+            base: { bg: '#0a0b12', card: '#121326', line: '#1f2140' },
+            neon: { blue: '#4cc1ff', violet: '#a78b45', fuchsia: '#ff6bff', cyan: '#3fe3ff' },
+          },
+          boxShadow: {
+            neonBlue: '0 0 22px rgba(76,193,255,.35)',
+            neonViolet: '0 0 22px rgba(167,139,250,.35)',
+          },
+        },
+      },
+    };
+  } catch {
+    // ignore
+  }
+}
